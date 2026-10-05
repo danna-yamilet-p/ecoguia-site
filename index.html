@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Separa tu basura: guía de recolección y reciclaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14261c; --paper:#f2f5f0; --card:#ffffff; --line:#d5ddd3; --muted:#52645a;
+    --verde:#2e7d4f; --azul:#2f6db5; --amarillo:#e0b020; --gris:#6b7280; --rojo:#c0392b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Bricolage Grotesque',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;font-size:1.05rem}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 1.25rem}
+  section{padding:4rem 0}
+  h1,h2,h3{line-height:1.15}
+  h2{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;margin-bottom:.75rem}
+  .lead{color:var(--muted);max-width:60ch;margin-bottom:2rem}
+
+  /* Navegación */
+  nav{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);z-index:5}
+  nav .wrap{display:flex;gap:1.25rem;align-items:center;flex-wrap:wrap;padding-top:.7rem;padding-bottom:.7rem}
+  nav strong{margin-right:auto;font-weight:800}
+  nav a{text-decoration:none;font-size:.95rem;color:var(--muted)}
+  nav a:hover{color:var(--ink)}
+
+  /* Portada: las cinco franjas son los contenedores */
+  .hero{padding:4.5rem 0 3.5rem}
+  .hero h1{font-size:clamp(2.4rem,7vw,4.6rem);font-weight:800;max-width:14ch;letter-spacing:-.02em}
+  .hero p{margin-top:1.2rem;max-width:52ch;color:var(--muted);font-size:1.15rem}
+  .stripes{display:flex;height:14px;margin-top:2.5rem;border-radius:7px;overflow:hidden}
+  .stripes span{flex:1}
+
+  /* Contenedores */
+  .bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+  .bin{background:var(--card);border:1px solid var(--line);border-top:10px solid var(--c);border-radius:6px;padding:1.3rem}
+  .bin h3{font-size:1.25rem;margin-bottom:.2rem}
+  .bin .tag{font-size:.9rem;font-weight:600;color:var(--c);margin-bottom:.7rem}
+  .bin p{font-size:.97rem;color:var(--muted);margin-bottom:.6rem}
+  .bin ul{padding-left:1.1rem;font-size:.95rem}
+  .nota{margin-top:1.2rem;font-size:.92rem;color:var(--muted);max-width:70ch}
+
+  /* Recorrido de la basura (sí es una secuencia) */
+  .steps{list-style:none;counter-reset:s;max-width:700px}
+  .steps li{counter-increment:s;position:relative;padding:0 0 1.6rem 3.2rem;border-left:2px solid var(--line);margin-left:1rem}
+  .steps li:last-child{border-left-color:transparent}
+  .steps li::before{content:counter(s);position:absolute;left:-1rem;top:0;width:2rem;height:2rem;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.95rem}
+  .steps h3{font-size:1.1rem;margin-bottom:.15rem}
+  .steps p{color:var(--muted);font-size:.97rem}
+
+  /* Juego */
+  .game{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1.5rem}
+  .game .item{font-size:1.6rem;font-weight:800;margin:.3rem 0 1rem}
+  .choices{display:flex;flex-wrap:wrap;gap:.6rem}
+  .choices button{font:inherit;font-weight:600;color:#fff;background:var(--c);border:0;border-radius:6px;padding:.65rem 1.1rem;cursor:pointer}
+  .choices button:hover{filter:brightness(1.1)}
+  #resultado{min-height:3.2rem;margin-top:1rem;font-weight:600}
+  #resultado.ok{color:var(--verde)} #resultado.mal{color:var(--rojo)}
+  #siguiente{font:inherit;margin-top:.5rem;padding:.5rem 1rem;border:1px solid var(--ink);background:none;border-radius:6px;cursor:pointer;display:none}
+  .puntos{color:var(--muted);font-size:.95rem}
+
+  /* Consejos */
+  .tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;list-style:none}
+  .tips li{border-top:2px solid var(--ink);padding-top:.8rem}
+  .tips strong{display:block;margin-bottom:.2rem}
+  .tips span{color:var(--muted);font-size:.97rem}
+
+  footer{background:var(--ink);color:#d9e2dc;padding:2rem 0;font-size:.95rem}
+  footer p+p{margin-top:.4rem;opacity:.8}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <strong>Separa tu basura</strong>
+    <a href="#contenedores">Contenedores</a>
+    <a href="#recoleccion">Recolección</a>
+    <a href="#juego">Practica</a>
+    <a href="#consejos">Consejos</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Lo que tiras sí tiene destino</h1>
+    <p>Separar los residuos en casa facilita su reciclaje, reduce lo que llega a los rellenos sanitarios y mantiene limpias nuestras calles y ríos. Aquí aprenderás cómo hacerlo paso a paso.</p>
+    <div class="stripes" aria-hidden="true">
+      <span style="background:var(--verde)"></span>
+      <span style="background:var(--azul)"></span>
+      <span style="background:var(--amarillo)"></span>
+      <span style="background:var(--gris)"></span>
+      <span style="background:var(--rojo)"></span>
+    </div>
+  </div>
+</header>
+
+<section id="contenedores">
+  <div class="wrap">
+    <h2>Cinco tipos de residuos</h2>
+    <p class="lead">Cada color indica qué se puede depositar. Si dudas, revisa el empaque o pregunta en tu municipio.</p>
+    <div class="bins">
+      <article class="bin" style="--c:var(--verde)">
+        <h3>Orgánicos</h3>
+        <div class="tag">Contenedor verde</div>
+        <p>Restos que se descomponen y pueden volverse composta.</p>
+        <ul><li>Cáscaras de fruta y verdura</li><li>Restos de comida</li><li>Café, té y cascarón de huevo</li><li>Hojas y ramas pequeñas</li></ul>
+      </article>
+      <article class="bin" style="--c:var(--azul)">
+        <h3>Papel y cartón</h3>
+        <div class="tag">Contenedor azul</div>
+        <p>Deben estar limpios y secos para poder reciclarse.</p>
+        <ul><li>Hojas, cuadernos y periódico</li><li>Cajas de cartón aplanadas</li><li>Sobres y revistas</li></ul>
+      </article>
+      <article class="bin" style="--c:var(--amarillo)">
+        <h3>Plástico, vidrio y metal</h3>
+        <div class="tag">Contenedor amarillo</div>
+        <p>Enjuaga los envases antes de tirarlos.</p>
+        <ul><li>Botellas de PET</li><li>Frascos y botellas de vidrio</li><li>Latas de aluminio y de conservas</li></ul>
+      </article>
+      <article class="bin" style="--c:var(--gris)">
+        <h3>No reciclables</h3>
+        <div class="tag">Contenedor gris</div>
+        <p>Lo que no se puede aprovechar y va a disposición final.</p>
+        <ul><li>Papel sanitario y pañales</li><li>Unicel</li><li>Colillas de cigarro</li><li>Envolturas de botana</li></ul>
+      </article>
+      <article class="bin" style="--c:var(--rojo)">
+        <h3>Peligrosos</h3>
+        <div class="tag">Contenedor rojo</div>
+        <p>Nunca van en la basura común: llévalos a un centro de acopio.</p>
+        <ul><li>Pilas y baterías</li><li>Focos ahorradores</li><li>Aceite y pintura</li><li>Medicamentos caducos</li></ul>
+      </article>
+    </div>
+    <p class="nota">Los colores y las categorías pueden cambiar según el municipio o país. Esta guía usa un esquema común; consulta las reglas de tu localidad.</p>
+  </div>
+</section>
+
+<section id="recoleccion" style="background:var(--card)">
+  <div class="wrap">
+    <h2>¿Qué pasa después de sacar la bolsa?</h2>
+    <p class="lead">El recorrido de un residuo desde tu casa hasta su destino final.</p>
+    <ol class="steps">
+      <li><h3>Separación en casa</h3><p>Cada persona clasifica sus residuos y los guarda en bolsas o botes distintos.</p></li>
+      <li><h3>Recolección</h3><p>El camión recolector pasa en los días y horarios que indica el municipio. Algunos días solo se llevan orgánicos y otros, reciclables.</p></li>
+      <li><h3>Transferencia</h3><p>Los residuos se concentran en estaciones donde se agrupan para transportarlos a mayor distancia.</p></li>
+      <li><h3>Selección y reciclaje</h3><p>En plantas de selección se separan materiales como papel, vidrio y plástico para venderlos y convertirlos en productos nuevos.</p></li>
+      <li><h3>Disposición final</h3><p>Lo que no se puede aprovechar se deposita en un relleno sanitario controlado.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="juego">
+  <div class="wrap">
+    <h2>Practica: ¿dónde va?</h2>
+    <p class="lead">Elige el contenedor correcto para cada objeto.</p>
+    <div class="game">
+      <div class="puntos">Aciertos: <span id="aciertos">0</span> de <span id="total">0</span></div>
+      <div class="item" id="objeto"></div>
+      <div class="choices" id="opciones"></div>
+      <div id="resultado" role="status" aria-live="polite"></div>
+      <button id="siguiente" type="button">Siguiente objeto</button>
+    </div>
+  </div>
+</section>
+
+<section id="consejos" style="background:var(--card)">
+  <div class="wrap">
+    <h2>Qué puedes hacer desde hoy</h2>
+    <p class="lead">Cambios pequeños que se notan.</p>
+    <ul class="tips">
+      <li><strong>Enjuaga los envases</strong><span>Un envase sucio puede arruinar todo el material reciclable.</span></li>
+      <li><strong>Aplana cajas y botellas</strong><span>Ocupan menos espacio y se transportan mejor.</span></li>
+      <li><strong>Haz composta</strong><span>Los orgánicos pueden volverse abono para tus plantas.</span></li>
+      <li><strong>Reduce y reutiliza</strong><span>La mejor basura es la que no se genera: usa bolsas y botellas reutilizables.</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Proyecto escolar sobre recolección y separación de residuos.</p>
+    <p>Autor: [tu nombre] · Materia: [materia] · Profesor: [nombre del profesor]</p>
+    <p>Fuentes: [agrega aquí las páginas o libros que consultaste]</p>
+  </div>
+</footer>
+
+<script>
+  const cont = {
+    verde:{n:"Orgánicos",c:"var(--verde)"},
+    azul:{n:"Papel y cartón",c:"var(--azul)"},
+    amarillo:{n:"Plástico, vidrio y metal",c:"var(--amarillo)"},
+    gris:{n:"No reciclables",c:"var(--gris)"},
+    rojo:{n:"Peligrosos",c:"var(--rojo)"}
+  };
+  const objetos = [
+    ["Cáscara de plátano","verde"],["Cuaderno viejo","azul"],["Botella de refresco","amarillo"],
+    ["Pila de control remoto","rojo"],["Pañal","gris"],["Lata de atún","amarillo"],
+    ["Caja de cartón","azul"],["Restos de comida","verde"],["Foco ahorrador","rojo"],
+    ["Frasco de vidrio","amarillo"],["Vaso de unicel","gris"],["Periódico","azul"]
+  ];
+  let actual, aciertos = 0, total = 0, pendientes = [];
+  const $ = id => document.getElementById(id);
+
+  function nuevo(){
+    if(!pendientes.length) pendientes = [...objetos].sort(()=>Math.random()-.5);
+    actual = pendientes.pop();
+    $("objeto").textContent = actual[0];
+    $("resultado").textContent = ""; $("resultado").className = "";
+    $("siguiente").style.display = "none";
+    const op = $("opciones"); op.innerHTML = "";
+    for(const k in cont){
+      const b = document.createElement("button");
+      b.type = "button"; b.textContent = cont[k].n; b.style.setProperty("--c", cont[k].c);
+      b.onclick = () => elegir(k);
+      op.appendChild(b);
+    }
+  }
+  function elegir(k){
+    total++;
+    const r = $("resultado");
+    if(k === actual[1]){ aciertos++; r.textContent = "Correcto. " + actual[0] + " va en " + cont[k].n + "."; r.className = "ok"; }
+    else { r.textContent = "No es ese. " + actual[0] + " va en " + cont[actual[1]].n + "."; r.className = "mal"; }
+    $("aciertos").textContent = aciertos; $("total").textContent = total;
+    document.querySelectorAll("#opciones button").forEach(b => b.disabled = true);
+    $("siguiente").style.display = "inline-block";
+  }
+  $("siguiente").onclick = nuevo;
+  nuevo();
+</script>
+</body>
+</html>
